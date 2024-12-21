@@ -32,8 +32,14 @@ A Python package for cybersecurity threat analysis and detection. This package p
    ```
 
 3. (Optional) Install in editable mode for development:
+
    ```powershell
    pip install -e .
+   ```
+
+4. Using PowerShell Module - MicromambaTools (https://github.com/zhazhalove/MicromambaTools)
+   ```powershell
+   Install-PackagesInMicromambaEnvironment -EnvName "langchain" -Packages @("$PWD\threat_detection_score_py_package")
    ```
 
 ## Usage
