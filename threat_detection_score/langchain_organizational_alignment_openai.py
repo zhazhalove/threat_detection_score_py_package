@@ -1,6 +1,6 @@
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_openai import ChatOpenAI
-from langchain_core.runnables import RunnablePassthrough
+from langchain_core.runnables import RunnablePassthrough, ConfigurableField
 from langchain_core.tools import tool
 from typing import Literal
 from threat_detection_score.input_sanitizer.sanitize import sanitize_input
@@ -18,13 +18,23 @@ def main(
         "-i",  # Optional shorthand flag
         help="The input message describing the cybersecurity detection scenario.",
         callback=sanitize_input  # Use the sanitize_input function for validation
+    ),
+    temperature: str = typer.Option(
+        0.0,  # Default value
+        "--temperature",  # Specify the flag name
+        help="The temperature of the LLM."
+    ),
+    model_name: str = typer.Option(
+        "gpt-4o-mini",  # Default value
+        "--model-name",  # Specify the flag name
+        help="The LLM model used."
+    ),
+    max_retries: str = typer.Option(
+        3,  # Default value
+        "--max-retries",  # Specify the flag name
+        help="The maximum number of retries for the LLM."
     )
 ):
-    llm_model = "gpt-4o-mini"
-    llm_temp = 0
-
-    # load .env environment variables
-    load_dotenv()
 
     chat_template = ChatPromptTemplate.from_messages(
         [
@@ -82,7 +92,23 @@ def main(
     prompt = prompt.partial(org_align_add_info=add_on_info)
 
 
-    model = ChatOpenAI(model=llm_model, temperature=llm_temp)
+    model = ChatOpenAI().configurable_fields(
+        temperature=ConfigurableField(
+            id="llm_temperature",
+            name="LLM Temperature",
+            description="The temperature of the LLM"
+        ),
+        model_name=ConfigurableField(
+            id="llm_model",
+            name="LLM Model",
+            description="The LLM model used",
+        ),
+        max_retries=ConfigurableField(
+            id="llm_max_retries",
+            name="LLM max retries",
+            description="langchain LLM max retries",
+        )
+    )
 
     @tool
     def org_alingment(score: Literal[0, 1, 2, 3], reason: str) -> None:
@@ -95,7 +121,7 @@ def main(
         {"detection_requirement": RunnablePassthrough()}
         | prompt
         | model.bind_tools(tools, tool_choice="org_alingment")
-    )
+    ).with_config(configurable={"llm_temperature": temperature, "llm_model":model_name, "llm_max_retries": max_retries})
 
     llm_result = chain.invoke({"detection_requirement": human_message_input})
 
