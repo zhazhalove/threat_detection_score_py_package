@@ -76,11 +76,18 @@ The package provides the following console scripts:
 # Run detection coverage analysis
 python -m detection_coverage --human-message-input "some text"
 
+python -m detection_coverage --human-message-input "some text" --temperature "0.0" --model-name "gpt-4o-mini" --max-retries "3"
+
 # Align organizational practices
 python -m org_alignment --human-message-input "some text"
 
+python -m org_alignment --human-message-input "some text" --temperature "0.0" --model-name "gpt-4o-mini" --max-retries "3"
+
 # Assess threat severity
 python -m threat_severity --human-message-input "some text"
+
+python -m reat_severity --human-message-input "some text" --temperature "0.0" --model-name "gpt-4o-mini" --max-retries "3"
+
 ```
 
 ## Dependencies
@@ -90,7 +97,6 @@ The following packages are required:
 - `typer`
 - `langchain`
 - `langchain-openai`
-- `python-dotenv`
 
 Dependencies are automatically installed when the package is installed.
 

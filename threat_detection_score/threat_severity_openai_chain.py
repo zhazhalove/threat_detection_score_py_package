@@ -4,7 +4,6 @@ from langchain_core.runnables import RunnablePassthrough, ConfigurableField
 from langchain_core.tools import tool
 from threat_detection_score.input_sanitizer.sanitize import sanitize_input
 from typing import Literal
-from dotenv import load_dotenv
 import json, textwrap, typer
 
 

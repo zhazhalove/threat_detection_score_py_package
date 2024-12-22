@@ -2,7 +2,6 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_openai import ChatOpenAI
 from langchain_core.runnables import RunnablePassthrough, ConfigurableField
 from langchain_core.tools import tool
-from dotenv import load_dotenv
 from threat_detection_score.input_sanitizer.sanitize import sanitize_input
 from typing import Literal
 
