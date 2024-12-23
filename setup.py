@@ -18,6 +18,8 @@ setup(
             "detection_coverage=threat_detection_score.langchain_detection_coverage_openai:app",
             "org_alignment=threat_detection_score.langchain_organizational_alignment_openai:app",
             "threat_severity=threat_detection_score.threat_severity_openai_chain:app",
+            "exploit_eval=threat_detection_score.langchain_exploit_eval_openai:app",
+            "active_exploit=threat_detection_score.langchain_active_exploit_openai:app"
         ]
     },
     classifiers=[
