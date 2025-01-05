@@ -5,6 +5,7 @@ from langchain_core.tools import tool
 from typing import Literal
 from threat_detection_score.input_sanitizer.sanitize import sanitize_input
 import json, textwrap, typer
+from pprint import pprint
 
 app = typer.Typer()
 
@@ -90,24 +91,7 @@ def main(
 
     prompt = prompt.partial(org_align_add_info=add_on_info)
 
-
-    model = ChatOpenAI().configurable_fields(
-        temperature=ConfigurableField(
-            id="llm_temperature",
-            name="LLM Temperature",
-            description="The temperature of the LLM"
-        ),
-        model_name=ConfigurableField(
-            id="llm_model",
-            name="LLM Model",
-            description="The LLM model used",
-        ),
-        max_retries=ConfigurableField(
-            id="llm_max_retries",
-            name="LLM max retries",
-            description="langchain LLM max retries",
-        )
-    )
+    model = ChatOpenAI(model=model_name, temperature=temperature, max_retries=max_retries)
 
     @tool
     def org_alingment(score: Literal[0, 1, 2, 3], reason: str) -> None:
@@ -120,7 +104,7 @@ def main(
         {"detection_requirement": RunnablePassthrough()}
         | prompt
         | model.bind_tools(tools, tool_choice="org_alingment")
-    ).with_config(configurable={"llm_temperature": temperature, "llm_model":model_name, "llm_max_retries": max_retries})
+    )
 
     llm_result = chain.invoke({"detection_requirement": human_message_input})
 

@@ -70,23 +70,7 @@ def main(
 
     prompt = chat_template.partial(system_prompt=system_prompt)
 
-    model = ChatOpenAI().configurable_fields(
-        temperature=ConfigurableField(
-            id="llm_temperature",
-            name="LLM Temperature",
-            description="The temperature of the LLM"
-        ),
-        model_name=ConfigurableField(
-            id="llm_model",
-            name="LLM Model",
-            description="The LLM model used",
-        ),
-        max_retries=ConfigurableField(
-            id="llm_max_retries",
-            name="LLM max retries",
-            description="langchain LLM max retries",
-        )
-    )
+    model = ChatOpenAI(model=model_name, temperature=temperature, max_retries=max_retries)
 
     @tool
     def threat_severity(score: Literal[1, 2, 3], reason: str) -> None:
