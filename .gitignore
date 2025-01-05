@@ -2,3 +2,7 @@ threat_detection_score/build/*
 threat_detection_score/threat_detection_score.egg-info/*
 build/*
 threat_detection_score.egg-info/*
+.vscode/launch.json
+.venv/
+threat_detection_score/__pycache__/
+threat_detection_score/input_sanitizer/__pycache__/
